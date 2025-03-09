@@ -33,6 +33,7 @@
 
 <body>
 
+    
   <!-- ======= Top Bar ======= -->
   <div id="topbar" class="d-flex align-items-center fixed-top">
     <div class="container d-flex justify-content-center justify-content-md-between">
@@ -205,6 +206,7 @@
             <div class="menu-content">
               <a href="#">Lobster Bisque</a><span>$5.95</span>
             </div>
+            <button class="add-to-cart-btn" data-name="Shawarma" data-price="10">Add to Cart</button>
             <div class="menu-ingredients">
               Lorem, deren, trataro, filede, nerada
             </div>
@@ -215,6 +217,7 @@
             <div class="menu-content">
               <a href="#">Bread Barrel</a><span>$6.95</span>
             </div>
+            <button class="add-to-cart-btn" data-name="Shawarma" data-price="10">Add to Cart</button>
             <div class="menu-ingredients">
               Lorem, deren, trataro, filede, nerada
             </div>
@@ -225,6 +228,7 @@
             <div class="menu-content">
               <a href="#">Crab Cake</a><span>$7.95</span>
             </div>
+            <button class="add-to-cart-btn" data-name="Shawarma" data-price="10">Add to Cart</button>
             <div class="menu-ingredients">
               A delicate crab cake served on a toasted roll with lettuce and tartar sauce
             </div>
@@ -235,6 +239,7 @@
             <div class="menu-content">
               <a href="#">Caesar Selections</a><span>$8.95</span>
             </div>
+            <button class="add-to-cart-btn" data-name="Shawarma" data-price="10">Add to Cart</button>
             <div class="menu-ingredients">
               Lorem, deren, trataro, filede, nerada
             </div>
@@ -245,6 +250,7 @@
             <div class="menu-content">
               <a href="#">Tuscan Grilled</a><span>$9.95</span>
             </div>
+            <button class="add-to-cart-btn" data-name="Shawarma" data-price="10">Add to Cart</button>
             <div class="menu-ingredients">
               Grilled chicken with provolone, artichoke hearts, and roasted red pesto
             </div>
@@ -255,6 +261,7 @@
             <div class="menu-content">
               <a href="#">Mozzarella Stick</a><span>$4.95</span>
             </div>
+            <button class="add-to-cart-btn" data-name="Shawarma" data-price="10">Add to Cart</button>
             <div class="menu-ingredients">
               Lorem, deren, trataro, filede, nerada
             </div>
@@ -265,6 +272,7 @@
             <div class="menu-content">
               <a href="#">Greek Salad</a><span>$9.95</span>
             </div>
+            <button class="add-to-cart-btn" data-name="Shawarma" data-price="10">Add to Cart</button>
             <div class="menu-ingredients">
               Fresh spinach, crisp romaine, tomatoes, and Greek olives
             </div>
@@ -275,6 +283,7 @@
             <div class="menu-content">
               <a href="#">Spinach Salad</a><span>$9.95</span>
             </div>
+            <button class="add-to-cart-btn" data-name="Shawarma" data-price="10">Add to Cart</button>
             <div class="menu-ingredients">
               Fresh spinach with mushrooms, hard boiled egg, and warm bacon vinaigrette
             </div>
@@ -285,6 +294,7 @@
             <div class="menu-content">
               <a href="#">Lobster Roll</a><span>$12.95</span>
             </div>
+            <button class="add-to-cart-btn" data-name="Shawarma" data-price="10">Add to Cart</button>
             <div class="menu-ingredients">
               Plump lobster meat, mayo and crisp lettuce on a toasted bulky roll
             </div>
@@ -293,6 +303,14 @@
         </div>
 
       </div>
+      <div id="cart" class="fixed-top" style="right: 0; width: 300px; background: #1a1814; padding: 20px; height: 100vh; overflow-y: auto;">
+        <h3>Your Cart</h3>
+        <ul id="cart-items" class="list-unstyled">
+            <!-- Cart items will be dynamically added here -->
+        </ul>
+        <p>Total: $<span id="cart-total">0</span></p>
+        <button id="checkout-btn" class="btn btn-primary w-100">Checkout</button>
+    </div>
     </section><!-- End Menu Section -->
 
     
@@ -381,6 +399,53 @@
 <script src="../assets/js/main.js"></script>
 
 </body>
+<script>
+  // Initialize cart
+  let cart = [];
+  let total = 0;
 
+  // Function to add item to cart
+  function addToCart(name, price) {
+    cart.push({ name, price });
+    total += parseFloat(price);
+    updateCart();
+  }
+
+  // Function to update the cart UI
+  function updateCart() {
+    const cartItems = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+
+    // Clear the cart list
+    cartItems.innerHTML = '';
+
+    // Add each item to the cart list
+    cart.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = `${item.name} - $${item.price}`;
+      cartItems.appendChild(li);
+    });
+
+    // Update the total
+    cartTotal.textContent = total.toFixed(2);
+  }
+
+  // Add event listeners to "Add to Cart" buttons
+  document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const name = button.getAttribute('data-name');
+      const price = button.getAttribute('data-price');
+      addToCart(name, price);
+    });
+  });
+
+  // Checkout button functionality
+  document.getElementById('checkout-btn').addEventListener('click', () => {
+    alert(`Thank you for your order! Total: $${total.toFixed(2)}`);
+    cart = [];
+    total = 0;
+    updateCart();
+  });
+</script>
 </html>
 
