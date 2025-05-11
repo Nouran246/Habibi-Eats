@@ -6,6 +6,17 @@
     box-sizing: border-box;
     font-family: 'Montserrat', sans-serif;
 }
+.php-email-form .form-control,
+.php-email-form .form-select {
+  background-color: #0c0b09;
+  border-color: #625b4b;
+  color: white;
+}
+
+.php-email-form .form-control::placeholder,
+.php-email-form .form-select::placeholder {
+  color: #a49b89;
+}
 
 body{
     background-color: #6e4107;
