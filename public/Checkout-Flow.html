@@ -151,7 +151,6 @@
 
             <!-- Feedback messages -->
             <div class="loading" style="color: #cda45e;">Loading...</div>
-            <div class="error-message text-danger"></div>
             <div class="sent-message" style="color: #cda45e;">Your order has been placed. Thank you!</div>
 
             <div class="text-center mt-3">
@@ -246,201 +245,39 @@
 <!-- Template Main JS File -->
 <script src="../assets/js/main.js"></script>
 <script>
-  // Toggle card info fields based on payment method
-  document.getElementById('paymentMethod').addEventListener('change', function() {
+  // Show/hide card details based on payment method
+  document.getElementById('paymentMethod').addEventListener('change', function () {
     const cardInfo = document.getElementById('cardInfo');
     cardInfo.style.display = (this.value === 'card') ? 'block' : 'none';
   });
 
-  // Form submission handler
-  document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    const loading = document.querySelector('.loading');
-    const errorMessage = document.querySelector('.error-message');
-    const sentMessage = document.querySelector('.sent-message');
-    const paymentMethod = document.getElementById('paymentMethod').value;
-    
-    // Hide all messages initially
-    loading.style.display = 'none';
-    errorMessage.style.display = 'none';
+  // Handle form submission
+  const form = document.querySelector('.php-email-form');
+  const sentMessage = document.querySelector('.sent-message');
+  const loading = document.querySelector('.loading');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault(); // Prevent actual form submission
+
+    // Clear any previous messages
     sentMessage.style.display = 'none';
-    
-    // Validate form
-    if (!validateForm()) {
-      return; // Stop if validation fails
-    }
-    
-    // Additional confirmation for cash on delivery
-    if (paymentMethod === 'cash') {
-      const confirmCash = confirm('You selected Cash on Delivery. Please prepare exact change when the driver arrives. Continue with your order?');
-      if (!confirmCash) {
-        return; // User canceled the confirmation
-      }
-    }
-    
-    // Show loading
+
+    // Show loading animation
     loading.style.display = 'block';
-    
-    // Simulate processing delay
-    setTimeout(function() {
+
+    // Simulate network delay
+    setTimeout(() => {
       loading.style.display = 'none';
-      
-      // Create order summary
-      const orderSummary = createOrderSummary();
-      
-      // Show success message with payment-specific details
-      if (paymentMethod === 'cash') {
-        sentMessage.innerHTML = 'Your order has been placed successfully!<br>Please prepare <strong>$20.00</strong> in cash when our driver arrives.<br>Thank you for choosing Habibi Eats!';
-      } else {
-        sentMessage.textContent = 'Your order has been placed successfully! Thank you for choosing Habibi Eats.';
-      }
-      sentMessage.style.display = 'block';
-      
-      // Show alert with order details
-      alert(`Order Placed Successfully!\n\n${orderSummary}\n\nYour food will be prepared with love and delivered soon!`);
-      
-      // Reset form after 3 seconds
-      setTimeout(function() {
-        document.querySelector('form').reset();
-        document.getElementById('cardInfo').style.display = 'none';
-        sentMessage.style.display = 'none';
-      }, 3000);
-      
-    }, 1500); // Simulate 1.5 second processing time
+      form.style.display = 'none';
+
+      // Append thank you message
+      const thankYou = document.createElement('div');
+      thankYou.innerHTML = "<h3 style='color: #cda45e; text-align: center; margin-top: 20px;'>Thank you for choosing <strong>Habibi Eats</strong>. Your order has been placed.</h3>";
+      form.parentElement.appendChild(thankYou);
+    }, 1500); // Simulated delay of 1.5 seconds
   });
-
-  // Form validation
-  function validateForm() {
-    const errorMessage = document.querySelector('.error-message');
-    errorMessage.style.display = 'none';
-    
-    // Required fields for all orders
-    const requiredFields = [
-      { id: 'fullName', name: 'Full Name' },
-      { id: 'address', name: 'Address' },
-      { id: 'phone', name: 'Phone Number' },
-      { id: 'paymentMethod', name: 'Payment Method' }
-    ];
-    
-    // Check basic fields
-    for (const field of requiredFields) {
-      const element = document.getElementById(field.id);
-      if (!element.value.trim()) {
-        errorMessage.textContent = `${field.name} is required`;
-        errorMessage.style.display = 'block';
-        element.focus();
-        return false;
-      }
-    }
-    
-    // Phone number validation
-    const phone = document.getElementById('phone').value.trim();
-    if (!/^[0-9]+$/.test(phone)) {
-      errorMessage.textContent = 'Please enter a valid phone number (digits only)';
-      errorMessage.style.display = 'block';
-      document.getElementById('phone').focus();
-      return false;
-    }
-    
-    // Additional validation for card payments only
-    const paymentMethod = document.getElementById('paymentMethod').value;
-    if (paymentMethod === 'card') {
-      const cardFields = [
-        { id: 'cardNumber', name: 'Card Number' },
-        { id: 'cardExpiry', name: 'Expiry Date' },
-        { id: 'cardHolderName', name: 'Card Holder Name' },
-        { id: 'cardCVC', name: 'CVC' }
-      ];
-      
-      for (const field of cardFields) {
-        const element = document.getElementById(field.id);
-        if (!element || !element.value.trim()) {
-          errorMessage.textContent = `${field.name} is required for card payments`;
-          errorMessage.style.display = 'block';
-          if (element) element.focus();
-          return false;
-        }
-      }
-      
-      // Card number validation
-      const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
-      if (cardNumber.length !== 16 || !/^\d+$/.test(cardNumber)) {
-        errorMessage.textContent = 'Please enter a valid 16-digit card number';
-        errorMessage.style.display = 'block';
-        document.getElementById('cardNumber').focus();
-        return false;
-      }
-      
-      // Expiry date validation
-      const expiry = document.getElementById('cardExpiry').value;
-      if (!/^\d{2}\/\d{2}$/.test(expiry)) {
-        errorMessage.textContent = 'Please enter expiry date in MM/YY format';
-        errorMessage.style.display = 'block';
-        document.getElementById('cardExpiry').focus();
-        return false;
-      }
-      
-      // CVC validation
-      const cvc = document.getElementById('cardCVC').value;
-      if (cvc.length < 3 || cvc.length > 4 || !/^\d+$/.test(cvc)) {
-        errorMessage.textContent = 'Please enter a valid 3-4 digit CVC';
-        errorMessage.style.display = 'block';
-        document.getElementById('cardCVC').focus();
-        return false;
-      }
-    }
-    
-    return true; // All validations passed
-  }
-
-  // Create detailed order summary text
-  function createOrderSummary() {
-    const items = [
-      { name: 'Curried Chicken & Rice', price: 12.00 },
-      { name: 'Citrus Fruit Platter', price: 8.00 }
-    ];
-    
-    const total = items.reduce((sum, item) => sum + item.price, 0);
-    const paymentMethod = document.getElementById('paymentMethod').value;
-    const now = new Date();
-    const estimatedDelivery = new Date(now.getTime() + 45*60000); // 45 minutes from now
-    
-    let summary = `HABIBI EATS - ORDER CONFIRMATION\n`;
-    summary += `Order Time: ${now.toLocaleString()}\n`;
-    summary += `Estimated Delivery: ${estimatedDelivery.toLocaleTimeString()}\n\n`;
-    
-    summary += `ORDER DETAILS:\n`;
-    items.forEach(item => {
-      summary += `- ${item.name}: $${item.price.toFixed(2)}\n`;
-    });
-    summary += `\nSUBTOTAL: $${total.toFixed(2)}\n`;
-    summary += `DELIVERY FEE: $0.00\n`;
-    summary += `TOTAL: $${total.toFixed(2)}\n\n`;
-    
-    summary += `DELIVERY INFORMATION:\n`;
-    summary += `Name: ${document.getElementById('fullName').value}\n`;
-    summary += `Address: ${document.getElementById('address').value}\n`;
-    summary += `Phone: ${document.getElementById('phone').value}\n\n`;
-    
-    summary += `PAYMENT INFORMATION:\n`;
-    summary += `Method: ${paymentMethod === 'card' ? 'Credit/Debit Card' : 'Cash on Delivery'}\n`;
-    
-    if (paymentMethod === 'cash') {
-      summary += `Please prepare exact cash amount: $${total.toFixed(2)}\n`;
-      summary += `Our driver will not carry change for amounts over $20\n`;
-    } else {
-      const cardNumber = document.getElementById('cardNumber').value;
-      summary += `Card ending in: ${cardNumber.slice(-4)}\n`;
-    }
-    
-    summary += `\nThank you for choosing Habibi Eats!\n`;
-    summary += `We're preparing your food with love and care.\n`;
-    summary += `For any questions, call us at 15621.`;
-    
-    return summary;
-  }
 </script>
+
 
 </body>
 </html>
