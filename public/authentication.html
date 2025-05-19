@@ -10,6 +10,7 @@
 </head>
 <body>
     <div class="container" id="container">
+        <!-- Sign Up Form -->
         <div class="form-container sign-up">
             <form id="signupForm" onsubmit="return validateForm(event, this)" action="/auth/signup" method="POST">
                 <h1>Create Account</h1>
@@ -51,7 +52,7 @@
             </form>
         </div>
 
-
+        <!-- Sign In Form -->
         <div class="form-container sign-in">
             <form id="loginForm" onsubmit="return validateLogin(event)" action="/auth/login" method="POST">
                 <h1>Sign In</h1>
@@ -62,13 +63,15 @@
                     <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
                 </div>
                 <span>or use your email password</span>
-                <input type="email" placeholder="Email" name="loginemail">
-                <input type="password" placeholder="Password" name="password">
+                <input type="email" placeholder="Email" name="loginemail" id="loginEmail">
+                <input type="password" placeholder="Password" name="password" id="loginPassword">
                 <a href="#">Forget Your Password?</a>
-                <div class="error" id="loginErr"></div>
+                <div class="error" id="loginError"></div>
                 <button type="submit">Sign In</button>
             </form>
         </div>
+
+        <!-- Toggle Container -->
         <div class="toggle-container">
             <div class="toggle">
                 <div class="toggle-panel toggle-left">
@@ -86,5 +89,26 @@
     </div>
 
     <script src="..\assets\js\authentication.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission to allow validation
+            
+            // Get form data
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Simple validation (In a real application, you'd check credentials from a server)
+            if (email === "admin@domain.com" && password === "admin123") {
+                // Redirect to Admin page
+                window.location.href = "Admin.html"; // Ensure correct path
+            } else if (email === "user@domain.com" && password === "user123") {
+                // Redirect to Menu page
+                window.location.href = "menu.html"; // Ensure correct path
+            } else {
+                // Show error message
+                document.getElementById('loginError').textContent = "Invalid email or password.";
+            }
+        });
+    </script>
 </body>
 </html>
