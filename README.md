@@ -17,7 +17,9 @@ Habibi Eats connects users to local restaurants, offering a simple and user-frie
 ![Screenshot 2025-06-21 152901](https://github.com/user-attachments/assets/6dc0ce04-9a64-449b-9c07-8a4eb82f322d)
 ![Screenshot 2025-06-21 152912](https://github.com/user-attachments/assets/f64aa7f2-c36d-4390-9f1f-f85900794563)
 ![Screenshot 2025-06-21 152953](https://github.com/user-attachments/assets/4dc62e6e-2206-4075-9772-26640bd37b20)
-![Screenshot 2025-06-21 153008](https://github.com/user-attachments/assets/b201a7ef-5f34-4683-a7d1)
+
+![Screenshot 2025-06-21 153008](https://github.com/user-attachments/assets/5b3450be-6e7e-4bd5-8918-5d907472b90e)
+
 ![Screenshot 2025-06-21 153237](https://github.com/user-attachments/assets/61e67569-988e-4224-aee7-787891fcbf1f)
 -1f255941d00e)
 ![Screenshot 2025-06-21 153054](https://github.com/user-attachments/assets/2dfb1dbf-4adf-4723-aa24-3c2eda3ab6e7)
